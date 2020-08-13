@@ -1,0 +1,154 @@
+<template>
+  <div class="notes">
+    <div
+      class="note"
+      :class="{ full: !grid, red : note.highPriority,
+      yellow : note.mediumPriority }"
+      v-for="(note, index) in notes"
+      :key="index"
+    >
+      <div class="note-header">
+        <p style="cursor: pointer"
+          v-show="note.titleShow"
+          @click="titleEditing(index)">
+
+          {{ note.title }}
+
+          </p>
+        <br />
+        <br />
+        <input v-model="note.additionalTitleVar" v-show="note.hidenTitle" />
+        <p style="cursor: pointer" @click="removeNote(index)">x</p>
+      </div>
+
+      <div class="note-body">
+        <p style="cursor: pointer"
+          v-show="note.descrShow"
+          @click="descrEditing(index)">
+
+          {{ note.description }}
+
+        </p>
+        <input v-model="note.additionalDescrVar" v-show="note.hidenDescr" />
+        <span>{{ note.date }}</span>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {};
+  },
+
+  props: {
+    notes: {
+      type: Array,
+      required: true
+    },
+
+    grid: {
+      type: Boolean,
+      required: true
+    },
+
+    note: {
+      type: Object,
+      required: true
+    }
+  },
+  methods: {
+    // Remove note
+    removeNote(index) {
+      this.$emit("remove", index);
+    },
+
+    // Title editing
+    titleEditing(index) {
+      this.$emit("titleEditing", index);
+
+      document.body.addEventListener("keyup", e => {
+        if (e.keyCode === 13) this.$emit("enter", index);
+        else if (e.keyCode === 27) this.$emit("esc", index);
+      });
+    },
+
+    // Description editing
+    descrEditing(index) {
+      this.$emit("descrEditing", index);
+
+      document.body.addEventListener("keyup", e => {
+        if (e.keyCode === 13) this.$emit("enterDescr", index);
+        else if (e.keyCode === 27) this.$emit("escDescr", index);
+      });
+    }
+  }
+};
+</script>
+
+<style lang="scss">
+.notes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 40px 0;
+}
+.note {
+  width: 48%;
+  padding: 18px 20px;
+  margin-bottom: 20px;
+  background-color: #fff;
+  // border: solid;
+  // border-color: #494ce8;
+
+  &.full {
+    width: 100%;
+  }
+  &.red {
+    border: solid;
+    border-color: rgb(255, 0, 0);
+  }
+
+  &.yellow {
+    border: solid;
+    border-color: rgb(235, 231, 12);
+  }
+  &.green {
+    border: solid;
+    border-color: rgb(138, 124, 124);
+  }
+}
+
+.note-body {
+  p {
+    margin: 20px 0px;
+  }
+  span {
+    font-size: 14px;
+    color: #999999;
+  }
+}
+.note-header {
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+
+  p {
+    font-size: 22px;
+    color: rgb(45, 30, 255);
+  }
+}
+
+svg {
+  margin-right: 12px;
+  color: #999999;
+  &.active {
+    color: blue;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+</style>
