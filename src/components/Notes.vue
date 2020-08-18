@@ -59,11 +59,10 @@ export default {
       this.$emit("remove", index);
     },
 
-    // Editing
+    // Title editing
     editing(index, editParam) {
       console.log(editParam);
       if (editParam === "titleEditing") {
-        console.log("work");
         this.notes[index].titleShow = false;
         this.notes[index].additionalTitleVar = this.notes[index].title;
         this.notes[index].hidenTitle = true;
