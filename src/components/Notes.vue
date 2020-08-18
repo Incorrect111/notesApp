@@ -8,13 +8,11 @@
       :key="index"
     >
       <div class="note-header">
-        <p style="cursor: pointer"
+        <p
+          style="cursor: pointer"
           v-show="note.titleShow"
-          @click="titleEditing(index)">
-
-          {{ note.title }}
-
-          </p>
+          @click="editing(index, note.titleEditing)"
+        >{{ note.title }}</p>
         <br />
         <br />
         <input v-model="note.additionalTitleVar" v-show="note.hidenTitle" />
@@ -22,13 +20,11 @@
       </div>
 
       <div class="note-body">
-        <p style="cursor: pointer"
+        <p
+          style="cursor: pointer"
           v-show="note.descrShow"
-          @click="descrEditing(index)">
-
-          {{ note.description }}
-
-        </p>
+          @click="editing(index, note.descrEditing)"
+        >{{ note.description }}</p>
         <input v-model="note.additionalDescrVar" v-show="note.hidenDescr" />
         <span>{{ note.date }}</span>
       </div>
@@ -64,23 +60,39 @@ export default {
     },
 
     // Title editing
-    titleEditing(index) {
-      this.$emit("titleEditing", index);
+    editing(index, editParam) {
+      console.log(editParam);
+      if (editParam === "titleEditing") {
+        console.log("work");
+        this.notes[index].titleShow = false;
+        this.notes[index].additionalTitleVar = this.notes[index].title;
+        this.notes[index].hidenTitle = true;
 
-      document.body.addEventListener("keyup", e => {
-        if (e.keyCode === 13) this.$emit("enter", index);
-        else if (e.keyCode === 27) this.$emit("esc", index);
-      });
-    },
-
-    // Description editing
-    descrEditing(index) {
-      this.$emit("descrEditing", index);
-
-      document.body.addEventListener("keyup", e => {
-        if (e.keyCode === 13) this.$emit("enterDescr", index);
-        else if (e.keyCode === 27) this.$emit("escDescr", index);
-      });
+        document.body.addEventListener("keyup", e => {
+          if (e.keyCode === 13) {
+            this.notes[index].hidenTitle = false;
+            this.notes[index].titleShow = true;
+            this.notes[index].title = this.notes[index].additionalTitleVar;
+          } else if (e.keyCode === 27) {
+            this.notes[index].hidenTitle = false;
+            this.notes[index].titleShow = true;
+          }
+        });
+      } else if (editParam === "descrEditing") {
+        this.notes[index].descrShow = false;
+        this.notes[index].additionalDescrVar = this.notes[index].description;
+        this.notes[index].hidenDescr = true;
+        document.body.addEventListener("keyup", e => {
+          if (e.keyCode === 13) {
+            this.notes[index].hidenDescr = false;
+            this.notes[index].descrShow = true;
+            this.notes[index].description = this.notes[index].additionalDescrVar;
+          } else if (e.keyCode === 27) {
+            this.notes[index].hidenDescr = false;
+            this.notes[index].descrShow = true;
+          }
+        });
+      }
     }
   }
 };

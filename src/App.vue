@@ -66,12 +66,6 @@
             @remove="removeNote"
             :grid="grid"
             :note="note"
-            @titleEditing="titleEditing"
-            @descrEditing="descrEditing"
-            @enter="enter"
-            @esc="esc"
-            @enterDescr="enterDescr"
-            @escDescr="escDescr"
           />
         </div>
       </section>
@@ -118,6 +112,10 @@ export default {
 
         titleShow: true,
 
+        titleEditing: 'titleEditing',
+
+        descrEditing: 'descrEditing',
+
         additionalTitleVar: "",
 
         hidenDescr: false,
@@ -153,7 +151,12 @@ export default {
 
           descrShow: true,
 
-          additionalDescrVar: ""
+          additionalDescrVar: "",
+
+          titleEditing: "titleEditing",
+
+          descrEditing: 'descrEditing',
+
         },
 
         {
@@ -181,7 +184,12 @@ export default {
 
           descrShow: true,
 
-          additionalDescrVar: ""
+          additionalDescrVar: "",
+
+          titleEditing: "titleEditing",
+
+          descrEditing: 'descrEditing',
+
         },
 
         {
@@ -209,7 +217,12 @@ export default {
 
           descrShow: true,
 
-          additionalDescrVar: ""
+          additionalDescrVar: "",
+
+          titleEditing: "titleEditing",
+
+          descrEditing: 'descrEditing',
+
         }
       ]
     };
@@ -255,7 +268,9 @@ export default {
         additionalTitleVar,
         hidenDescr,
         descrShow,
-        additionalDescrVar
+        additionalDescrVar,
+        titleEditing,
+        descrEditing
       } = this.note;
 
       if (title === "") {
@@ -290,6 +305,8 @@ export default {
         hidenDescr,
         descrShow,
         additionalDescrVar,
+        titleEditing,
+        descrEditing,
         date: new Date(Date.now()).toLocaleString()
       });
 
@@ -304,52 +321,6 @@ export default {
     removeNote(index) {
       this.notes.splice(index, 1);
     },
-
-    // Title editing
-
-    titleEditing(index) {
-      this.notes[index].titleShow = false;
-      this.notes[index].additionalTitleVar = this.notes[index].title;
-      this.notes[index].hidenTitle = true;
-    },
-
-    // Description editing
-
-    descrEditing(index) {
-      this.notes[index].descrShow = false;
-      this.notes[index].additionalDescrVar = this.notes[index].description;
-      this.notes[index].hidenDescr = true;
-    },
-
-    // Enter button title editing
-
-    enter(index) {
-      this.notes[index].hidenTitle = false;
-      this.notes[index].titleShow = true;
-      this.notes[index].title = this.notes[index].additionalTitleVar;
-    },
-
-    // Esc button title editing
-
-    esc(index) {
-      this.notes[index].hidenTitle = false;
-      this.notes[index].titleShow = true;
-    },
-
-    // Enter button description editing
-
-    enterDescr(index) {
-      this.notes[index].hidenDescr = false;
-      this.notes[index].descrShow = true;
-      this.notes[index].description = this.notes[index].additionalDescrVar;
-    },
-
-    // Esc button description editing
-
-    escDescr(index) {
-      this.notes[index].hidenDescr = false;
-      this.notes[index].descrShow = true;
-    }
   }
 };
 </script>
