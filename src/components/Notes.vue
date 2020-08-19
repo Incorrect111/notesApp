@@ -59,7 +59,7 @@ export default {
       this.$emit("remove", index);
     },
 
-    // Title editing
+    //Editing note
     editing(index, editParam) {
       console.log(editParam);
       if (editParam === "titleEditing") {
