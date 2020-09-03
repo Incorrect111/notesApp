@@ -2,8 +2,7 @@
   <div class="notes">
     <div
       class="note"
-      :class="{ full: !grid, red : note.highPriority,
-      yellow : note.mediumPriority }"
+      :class="[note.priority, {full: !grid}]"
       v-for="(note, index) in notes"
       :key="index"
     >
@@ -12,7 +11,7 @@
           style="cursor: pointer"
           v-show="note.titleShow"
           @click="editing(index, note.titleEditing)"
-        >{{ note.title }}</p>
+        >{{ note.nameOfNote }}</p>
         <br />
         <br />
         <input v-model="note.additionalTitleVar" v-show="note.hidenTitle" />
@@ -24,7 +23,7 @@
           style="cursor: pointer"
           v-show="note.descrShow"
           @click="editing(index, note.descrEditing)"
-        >{{ note.description }}</p>
+        >{{ note.descrContent }}</p>
         <input v-model="note.additionalDescrVar" v-show="note.hidenDescr" />
         <span>{{ note.date }}</span>
       </div>
@@ -42,13 +41,19 @@ export default {
       type: Array,
       required: true
     },
-
     grid: {
       type: Boolean,
       required: true
     },
-
     note: {
+      type: Object,
+      required: true
+    },
+    title: {
+      type: Object,
+      required: true
+    },
+    description: {
       type: Object,
       required: true
     }
@@ -61,17 +66,16 @@ export default {
 
     //Editing note
     editing(index, editParam) {
-      console.log(editParam);
       if (editParam === "titleEditing") {
         this.notes[index].titleShow = false;
-        this.notes[index].additionalTitleVar = this.notes[index].title;
+        this.notes[index].additionalTitleVar = this.notes[index].nameOfNote;
         this.notes[index].hidenTitle = true;
 
         document.body.addEventListener("keyup", e => {
           if (e.keyCode === 13) {
             this.notes[index].hidenTitle = false;
             this.notes[index].titleShow = true;
-            this.notes[index].title = this.notes[index].additionalTitleVar;
+            this.notes[index].nameOfNote = this.notes[index].additionalTitleVar;
           } else if (e.keyCode === 27) {
             this.notes[index].hidenTitle = false;
             this.notes[index].titleShow = true;
@@ -79,13 +83,13 @@ export default {
         });
       } else if (editParam === "descrEditing") {
         this.notes[index].descrShow = false;
-        this.notes[index].additionalDescrVar = this.notes[index].description;
+        this.notes[index].additionalDescrVar = this.notes[index].descrContent;
         this.notes[index].hidenDescr = true;
         document.body.addEventListener("keyup", e => {
           if (e.keyCode === 13) {
             this.notes[index].hidenDescr = false;
             this.notes[index].descrShow = true;
-            this.notes[index].description = this.notes[index].additionalDescrVar;
+            this.notes[index].descrContent = this.notes[index].additionalDescrVar;
           } else if (e.keyCode === 27) {
             this.notes[index].hidenDescr = false;
             this.notes[index].descrShow = true;
@@ -110,22 +114,20 @@ export default {
   padding: 18px 20px;
   margin-bottom: 20px;
   background-color: #fff;
-  // border: solid;
-  // border-color: #494ce8;
 
   &.full {
     width: 100%;
   }
-  &.red {
+  &.High {
     border: solid;
     border-color: rgb(255, 0, 0);
   }
 
-  &.yellow {
+  &.Medium {
     border: solid;
     border-color: rgb(235, 231, 12);
   }
-  &.green {
+  &.Low {
     border: solid;
     border-color: rgb(138, 124, 124);
   }

@@ -6,11 +6,14 @@
           <message v-if="message" :message="message" />
 
           <!-- new note -->
-          <newNote :note="note" @addNote="addNote" />
+          <newNote :note="note"
+           :title="title"
+           :description="description"
+            @addNote="addNote" />
           <div class="note-header" style="margin: 36px 0;">
 
             <!-- tite -->
-            <H1>{{ title }}</H1>
+            <!-- <H1>{{ title.nameOfNote }}</H1> -->
 
             <!-- search -->
             <search :value="search" placeholder="Find your note" @search="search =  $event" />
@@ -66,6 +69,8 @@
             @remove="removeNote"
             :grid="grid"
             :note="note"
+            :title="title"
+            :description="description"
           />
         </div>
       </section>
@@ -95,134 +100,77 @@ export default {
       grid: true,
 
       note: {
-
-        title: "",
-
-        description: "",
-
-        priority: "",
-
-        highPriority: false,
-
-        mediumPriority: false,
-
-        lowPriority: false,
-
-        hidenTitle: false,
-
-        titleShow: true,
-
-        titleEditing: 'titleEditing',
-
-        descrEditing: 'descrEditing',
-
-        additionalTitleVar: "",
-
-        hidenDescr: false,
-
-        descrShow: true,
-
-        additionalDescrVar: ""
+        priority: "Low",
+          options :[
+          { id: 1, value: 'Low' },
+          { id: 2 , value: 'Medium' },
+          { id: 3, value: 'High' }
+         ]
       },
+       title: {
+          nameOfNote: "",
+          titleShow: true,
+          titleEditing: 'titleEditing',
+          additionalTitleVar: "",
+          hidenTitle: false,
+          titleEditing: 'titleEditing',
+          additionalTitleVar: ""
+        },
+
+        description: {
+          descrContent: "",
+          descrEditing: 'descrEditing',
+          hidenDescr: false,
+          descrShow: true,
+          additionalDescrVar: "",
+        },
+
+
 
       notes: [
         {
-          title: "First note",
-
-          description: "Description for first note",
-
+          nameOfNote: "First note",
+          descrContent: "Description for first note",
           date: new Date(Date.now()).toLocaleString(),
-
-          priority: "",
-
-          highPriority: false,
-
-          mediumPriority: false,
-
-          lowPriority: false,
-
+          priority: "Low",
           hidenTitle: false,
-
           titleShow: true,
-
           additionalTitleVar: "",
-
           hidenDescr: false,
-
           descrShow: true,
-
           additionalDescrVar: "",
-
           titleEditing: "titleEditing",
-
           descrEditing: 'descrEditing',
-
         },
 
         {
-          title: "Second note",
-
-          description: "Description for Second note",
-
+          nameOfNote: "Second note",
+          descrContent: "Description for Second note",
           date: new Date(Date.now()).toLocaleString(),
-
-          priority: "",
-
-          highPriority: false,
-
-          mediumPriority: false,
-
-          lowPriority: false,
-
+          priority: "Low",
           hidenTitle: false,
-
           titleShow: true,
-
           additionalTitleVar: "",
-
           hidenDescr: false,
-
           descrShow: true,
-
           additionalDescrVar: "",
-
           titleEditing: "titleEditing",
-
           descrEditing: 'descrEditing',
-
         },
 
         {
-          title: "Third note",
-
-          description: "Description for Third note",
-
+          nameOfNote: "Third note",
+          descrContent: "Description for Third note",
           date: new Date(Date.now()).toLocaleString(),
-
-          priority: "",
-
-          highPriority: false,
-
-          mediumPriority: false,
-
-          lowPriority: false,
-
+          priority: "Low",
           hidenTitle: false,
-
           titleShow: true,
-
           additionalTitleVar: "",
-
           hidenDescr: false,
-
           descrShow: true,
-
           additionalDescrVar: "",
-
           titleEditing: "titleEditing",
-
           descrEditing: 'descrEditing',
-
         }
       ]
     };
@@ -240,7 +188,7 @@ export default {
 
       // Filter
       array = array.filter(function(item) {
-        if (item.title.toLowerCase().indexOf(search) !== -1) {
+        if (item.nameOfNote.toLowerCase().indexOf(search) !== -1) {
           return item;
         }
       });
@@ -252,53 +200,35 @@ export default {
 
   methods: {
     addNote() {
-      console.log(this.note);
+      let {
+        priority
+      } = this.note;
 
       let {
-        title,
-        description,
-        priority,
-        red,
-        blue,
-        highPriority,
-        mediumPriority,
-        lowPriority,
+        nameOfNote,
+        titleEditing,
         hidenTitle,
         titleShow,
         additionalTitleVar,
+      } = this.title
+
+      let {
+        descrContent,
+        descrEditing,
         hidenDescr,
         descrShow,
-        additionalDescrVar,
-        titleEditing,
-        descrEditing
-      } = this.note;
+        additionalDescrVar
+      } = this.description
 
-      if (title === "") {
+      if (nameOfNote === "") {
         this.message = "title can`t be blank!";
         return false;
       }
 
-      switch (priority) {
-        case "High":
-          highPriority = true;
-          break;
-
-        case "Medium":
-          mediumPriority = true;
-          break;
-
-        case "Low":
-          lowPriority = true;
-          break;
-      }
-
       this.notes.push({
-        title,
-        description,
+        nameOfNote,
+        descrContent,
         priority,
-        highPriority,
-        mediumPriority,
-        lowPriority,
         hidenTitle,
         titleShow,
         additionalTitleVar,
@@ -307,12 +237,13 @@ export default {
         additionalDescrVar,
         titleEditing,
         descrEditing,
+
         date: new Date(Date.now()).toLocaleString()
       });
 
-      (this.note.title = ""),
-        (this.note.description = ""),
-        (this.note.priority = undefined);
+      (this.title.nameOfNote = ""),
+      (this.description.descrContent = ""),
+      (this.note.priority = undefined);
       this.message = null;
     },
 
