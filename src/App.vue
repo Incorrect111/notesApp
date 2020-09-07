@@ -12,8 +12,6 @@
             @addNote="addNote" />
           <div class="note-header" style="margin: 36px 0;">
 
-            <!-- tite -->
-            <!-- <H1>{{ title.nameOfNote }}</H1> -->
 
             <!-- search -->
             <search :value="search" placeholder="Find your note" @search="search =  $event" />
