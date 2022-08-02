@@ -6,15 +6,21 @@
           <message v-if="message" :message="message" />
 
           <!-- new note -->
-          <newNote :note="note"
-           :title="title"
-           :description="description"
-            @addNote="addNote" />
-          <div class="note-header" style="margin: 36px 0;">
-
-
+          <newNote
+            :note="note"
+            :title="title"
+            :description="description"
+            @addNote="addNote"
+          />
+          <div class="search__wrapper">
+          <div class="search" style="margin: 36px 0;">
             <!-- search -->
-            <search :value="search" placeholder="Find your note" @search="search =  $event" />
+            <search
+              :value="search"
+              :grid="grid"
+              placeholder="Find your note"
+              @search="search = $event"
+            />
 
             <!-- icons controls -->
             <div class="icons">
@@ -60,6 +66,7 @@
               </svg>
             </div>
           </div>
+          </div>
 
           <!-- note list -->
           <notes
@@ -87,7 +94,7 @@ export default {
     message,
     notes,
     newNote,
-    search
+    search,
   },
 
   data() {
@@ -99,31 +106,29 @@ export default {
 
       note: {
         priority: "Low",
-          options :[
-          { id: 1, value: 'Low' },
-          { id: 2 , value: 'Medium' },
-          { id: 3, value: 'High' }
-         ]
+        options: [
+          { id: 1, value: "Low" },
+          { id: 2, value: "Medium" },
+          { id: 3, value: "High" },
+        ],
       },
-       title: {
-          nameOfNote: "",
-          titleShow: true,
-          titleEditing: 'titleEditing',
-          additionalTitleVar: "",
-          hidenTitle: false,
-          titleEditing: 'titleEditing',
-          additionalTitleVar: ""
-        },
+      title: {
+        nameOfNote: "",
+        titleShow: true,
+        titleEditing: "titleEditing",
+        additionalTitleVar: "",
+        hidenTitle: false,
+        titleEditing: "titleEditing",
+        additionalTitleVar: "",
+      },
 
-        description: {
-          descrContent: "",
-          descrEditing: 'descrEditing',
-          hidenDescr: false,
-          descrShow: true,
-          additionalDescrVar: "",
-        },
-
-
+      description: {
+        descrContent: "",
+        descrEditing: "descrEditing",
+        hidenDescr: false,
+        descrShow: true,
+        additionalDescrVar: "",
+      },
 
       notes: [
         {
@@ -138,7 +143,7 @@ export default {
           descrShow: true,
           additionalDescrVar: "",
           titleEditing: "titleEditing",
-          descrEditing: 'descrEditing',
+          descrEditing: "descrEditing",
         },
 
         {
@@ -153,7 +158,7 @@ export default {
           descrShow: true,
           additionalDescrVar: "",
           titleEditing: "titleEditing",
-          descrEditing: 'descrEditing',
+          descrEditing: "descrEditing",
         },
 
         {
@@ -168,9 +173,9 @@ export default {
           descrShow: true,
           additionalDescrVar: "",
           titleEditing: "titleEditing",
-          descrEditing: 'descrEditing',
-        }
-      ]
+          descrEditing: "descrEditing",
+        },
+      ],
     };
   },
 
@@ -193,14 +198,12 @@ export default {
 
       // Error
       return array;
-    }
+    },
   },
 
   methods: {
     addNote() {
-      let {
-        priority
-      } = this.note;
+      let { priority } = this.note;
 
       let {
         nameOfNote,
@@ -208,15 +211,15 @@ export default {
         hidenTitle,
         titleShow,
         additionalTitleVar,
-      } = this.title
+      } = this.title;
 
       let {
         descrContent,
         descrEditing,
         hidenDescr,
         descrShow,
-        additionalDescrVar
-      } = this.description
+        additionalDescrVar,
+      } = this.description;
 
       if (nameOfNote === "") {
         this.message = "title can`t be blank!";
@@ -236,12 +239,12 @@ export default {
         titleEditing,
         descrEditing,
 
-        date: new Date(Date.now()).toLocaleString()
+        date: new Date(Date.now()).toLocaleString(),
       });
 
       (this.title.nameOfNote = ""),
-      (this.description.descrContent = ""),
-      (this.note.priority = undefined);
+        (this.description.descrContent = ""),
+        (this.note.priority = undefined);
       this.message = null;
     },
 
@@ -250,9 +253,17 @@ export default {
     removeNote(index) {
       this.notes.splice(index, 1);
     },
-  }
+  },
 };
 </script>
 
 <style>
+.search {
+  width: 400px;
+}
+.search__wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 </style>
